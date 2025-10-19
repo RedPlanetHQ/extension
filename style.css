@@ -1,0 +1,337 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --gray-50: #f9f9f9;
+    --gray-100: #efefef;
+    --gray-200: #e8e8e8;
+    --gray-300: #e0e0e0;
+    --gray-400: #cecece;
+    --gray-500: #d8d8d8;
+    --gray-600: #bbbbbb;
+    --gray-700: #8d8d8d;
+    --gray-800: #838383;
+    --gray-900: #646464;
+    --gray-950: #202020;
+
+    --grayAlpha-50: 0% 0 0 / 2.35%;
+    --grayAlpha-100: 0% 0 0 / 6.27%;
+    --grayAlpha-200: 0% 0 0 / 9.02%;
+    --grayAlpha-300: 0% 0 0 / 12.16%;
+    --grayAlpha-400: 0% 0 0 / 15.29%;
+    --grayAlpha-500: 0% 0 0 / 19.22%;
+    --grayAlpha-600: 0% 0 0 / 26.67%;
+    --grayAlpha-700: 0% 0 0 / 44.71%;
+    --grayAlpha-800: 0% 0 0 / 48.63%;
+    --grayAlpha-900: 0% 0 0 / 60.78%;
+    --grayAlpha-950: 0% 0 0 / 87.45%;
+
+    /* Colors for different status */
+    --status-pill-0: #d94b0e26;
+    --status-icon-0: #d94b0e;
+
+    --status-pill-1: #9f3def26;
+    --status-icon-1: #9f3def;
+
+    --status-pill-2: #8e862c26;
+    --status-icon-2: #8e862c;
+
+    --status-pill-3: #5c5c5c26;
+    --status-icon-3: #5c5c5c;
+
+    --status-pill-4: #c28c1126;
+    --status-icon-4: #c28c11;
+
+    --status-pill-5: #3f8ef726;
+    --status-icon-5: #3f8ef7;
+
+    --status-pill-6: #3caf2026;
+    --status-icon-6: #3caf20;
+
+    /* Avatar colors */
+    --custom-color-1: #b56455;
+    --custom-color-2: #7b8a34;
+    --custom-color-3: #1c91a8;
+    --custom-color-4: #886dbc;
+    --custom-color-5: #ad6e30;
+    --custom-color-6: #54935b;
+    --custom-color-7: #4187c0;
+    --custom-color-8: #a165a1;
+    --custom-color-9: #997d1d;
+    --custom-color-10: #2b9684;
+    --custom-color-11: #2b9684;
+    --custom-color-12: #b0617c;
+
+    /* Team Colors */
+    --team-color-1: #89c794;
+    --team-color-2: #d2a1bb;
+    --team-color-3: #90c5d6;
+  }
+
+  .dark {
+    --gray-50: #191919;
+    --gray-100: #222222;
+    --gray-200: #2a2a2a;
+    --gray-300: #313131;
+    --gray-400: #3a3a3a;
+    --gray-500: #484848;
+    --gray-600: #606060;
+    --gray-700: #6e6e6e;
+    --gray-800: #7b7b7b;
+    --gray-900: #b4b4b4;
+    --gray-950: #eeeeee;
+
+    --grayAlpha-50: 100% 0 0 / 3.53%;
+    --grayAlpha-100: 100% 0 0 / 7.06%;
+    --grayAlpha-200: 100% 0 0 / 10.59%;
+    --grayAlpha-300: 100% 0 0 / 13.33%;
+    --grayAlpha-400: 100% 0 0 / 17.25%;
+    --grayAlpha-500: 100% 0 0 / 23.14%;
+    --grayAlpha-600: 100% 0 0 / 33.33%;
+    --grayAlpha-700: 100% 0 0 / 39.22%;
+    --grayAlpha-800: 100% 0 0 / 44.31%;
+    --grayAlpha-900: 100% 0 0 / 68.63%;
+    --grayAlpha-950: 100% 0 0 / 92.94%;
+
+    /* Colors for different status */
+    --status-pill-0: #c06142;
+    --status-icon-0: #c06142;
+
+    --status-pill-1: #886dbc;
+    --status-icon-1: #886dbc;
+
+    --status-pill-2: #83872c;
+    --status-icon-2: #83872c;
+
+    --status-pill-3: #b4b4b4;
+    --status-icon-3: #5c5c5c;
+
+    --status-pill-4: #c28c11;
+    --status-icon-4: #c28c11;
+
+    --status-pill-5: #4187c0;
+    --status-icon-5: #4187c0;
+
+    --status-pill-6: #5d9151;
+    --status-icon-6: #5d9151;
+
+    /* Team Colors */
+    --team-color-1: #54935b;
+    --team-color-2: #a165a1;
+    --team-color-3: #4187c0;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 91.28% 0 0;
+    --background-2: 95.21% 0 0;
+    --background-3: 100% 0 0;
+    --foreground: 0% 0 0;
+    --popover: 93.05% 0 0;
+    --popover-foreground: 0% 0 0;
+    --primary: 60% 0.13 30;
+    --primary-foreground: 100% 0 0;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 0% 0 0;
+    --muted: 0% 0 0 / 19.22%;
+    --muted-foreground: 49.26% 0 0;
+    --accent: 100% 0 0;
+    --accent-foreground: 0% 0 0;
+    --destructive: 61.34% 0.162 23.58;
+    --destructive-foreground: 100% 0 0;
+    --warning: 70.43% 0.14390424619548714 87.9634104985311;
+    --warning-foreground: 100% 0 0;
+    --success: 64.93% 0.107 154.24;
+    --success-foreground: 100% 0 0;
+    --border: 0% 0 0 / 19.22%;
+    --border-dark: 0% 0 0 / 39.22%;
+    --input: 0% 0 0 / 6.27%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 8px;
+  }
+
+  .dark {
+    --background: 21.34% 0 0;
+    --background-2: 25.2% 0 0;
+    --background-3: 28.5% 0 0;
+    --foreground: 92.8% 0 0;
+    --popover: 28.5% 0 0;
+    --popover-foreground: 92.8% 0 0;
+    --primary: 60% 0.13 30;
+    --primary-foreground: 92.8% 0 0;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 92.8% 0 0;
+    --muted: 100% 0 0 / 13.33%;
+    --muted-foreground: 76.99% 0 0;
+    --accent: 95.81% 0 0;
+    --accent-foreground: 0% 0 0;
+    --warning: 70.43% 0.14390424619548714 87.9634104985311;
+    --warning-foreground: 100% 0 0;
+    --destructive: 61.34% 0.162 23.58;
+    --destructive-foreground: 100% 0 0;
+    --success: 64.93% 0.107 154.24;
+    --success-foreground: 100% 0 0;
+    --border: 100% 0 0 / 13.33%;
+    --border-dark: 100% 0 0 / 39.33%;
+    --input: 100% 0 0 / 10.59%;
+    --ring: 221.2 83.2% 53.3%;
+  }
+}
+
+/* Core extension custom styles */
+:root {
+  --radius: 6px;
+}
+
+@layer base {
+  * {
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+  }
+  body {
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+  }
+
+  @supports (scrollbar-width: auto) {
+    .overflow-y-auto,
+    .overflow-x-auto,
+    .overflow-auto {
+      overflow-anchor: none;
+      scrollbar-color: var(--gray-500) transparent;
+      scrollbar-width: thin;
+    }
+  }
+
+  /* Legacy browsers with `::-webkit-scrollbar-*` support */
+  @supports selector(::-webkit-scrollbar) {
+    .overflow-y-auto::-webkit-scrollbar-thumb,
+    .overflow-x-auto::-webkit-scrollbar-thumb,
+    .overflow-auto::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+    .overflow-y-auto::-webkit-scrollbar-track,
+    .overflow-x-auto::-webkit-scrollbar-track,
+    .overflow-auto::-webkit-scrollbar-track {
+      background: var(--gray-600);
+    }
+
+    .overflow-y-auto::-webkit-scrollbar,
+    .overflow-x-auto::-webkit-scrollbar,
+    .overflow-auto::-webkit-scrollbar {
+      max-width: 5px;
+    }
+  }
+
+  .ce-main-container {
+    p.is-editor-empty:before {
+      @apply ce-text-muted-foreground/70;
+
+      font-size: 14px !important;
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .tiptap {
+      outline: none !important;
+      box-shadow: none;
+
+      :first-child {
+        margin-top: 0;
+      }
+
+      pre {
+        @apply ce-bg-grayAlpha-100 ce-text-foreground ce-p-4 ce-rounded-md ce-w-fit;
+        margin: 1.5rem 0;
+
+        code {
+          background: none;
+          color: inherit;
+          font-size: 0.8rem;
+          padding: 0;
+        }
+
+        /* Code styling */
+        .hljs-comment,
+        .hljs-quote {
+          @apply ce-text-muted-foreground;
+        }
+
+        .hljs-variable,
+        .hljs-template-variable,
+        .hljs-attribute,
+        .hljs-tag,
+        .hljs-regexp,
+        .hljs-link,
+        .hljs-name,
+        .hljs-selector-id,
+        .hljs-selector-class {
+          color: var(--custom-color-4); /* #886dbc */
+        }
+
+        .hljs-number,
+        .hljs-meta,
+        .hljs-built_in,
+        .hljs-builtin-name,
+        .hljs-literal,
+        .hljs-type,
+        .hljs-params {
+          color: var(--custom-color-2); /* #7b8a34 */
+        }
+
+        .hljs-string,
+        .hljs-symbol,
+        .hljs-bullet {
+          color: var(--custom-color-3); /* #1c91a8 */
+        }
+
+        .hljs-title,
+        .hljs-section {
+          color: var(--custom-color-1); /* #b56455 */
+        }
+
+        .hljs-keyword,
+        .hljs-selector-tag {
+          color: var(--custom-color-5); /* #ad6e30 */
+        }
+
+        .hljs-emphasis {
+          font-style: italic;
+        }
+
+        .hljs-strong {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+/* Ensure our content script styles don't get overridden */
+.ce-main-container * {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+/* Pulse animation for auto-sync indicator */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
