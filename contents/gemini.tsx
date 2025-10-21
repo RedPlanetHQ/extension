@@ -6,7 +6,7 @@ import PlatformDot from "~components/platform-dot"
 import { cn } from "~components/utils"
 import { Platform } from "~types"
 import * as geminiUtils from "~utils/gemini"
-import { syncFunction } from "~utils/gemini"
+import { usePathname } from "~utils/pathname"
 import {
   getAutoSyncEnabled,
   getIsSyncing,
@@ -65,11 +65,29 @@ const GeminiContent = () => {
   const statusCheckIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const [isAutoSyncEnabled, setIsAutoSyncEnabled] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
+  const [sessionId, setSessionId] = useState<string | null>(null)
+  const pathname = usePathname()
 
-  // Initialize auto-sync state from chrome storage
+  // Extract conversation ID from URL
+  const getConversationId = () => {
+    const url = window.location.href
+    const match = url.match(/\/app\/([^/?]+)/)
+    return match ? match[1] : null
+  }
+
+  // Initialize session ID and auto-sync state
   useEffect(() => {
+    console.log("came here")
     const initialize = async () => {
-      const enabled = await getAutoSyncEnabled()
+      const conversationId = getConversationId()
+      setSessionId(conversationId)
+
+      if (!conversationId) {
+        console.warn("No conversation ID found")
+        return
+      }
+
+      const enabled = await getAutoSyncEnabled(conversationId)
       setIsAutoSyncEnabled(enabled)
 
       if (enabled) {
@@ -78,8 +96,11 @@ const GeminiContent = () => {
 
         // Start interval to run sync every 5 seconds
         syncIntervalRef.current = setInterval(() => {
+          console.log("sync called")
           geminiUtils.syncFunction()
         }, 5000)
+      } else {
+        console.log("sync disabled")
       }
 
       // Poll sync status from chrome storage every second
@@ -102,11 +123,16 @@ const GeminiContent = () => {
         statusCheckIntervalRef.current = null
       }
     }
-  }, [])
+  }, [pathname])
 
   const handleAutoSyncChange = async (enabled: boolean) => {
-    // Update chrome storage
-    await setAutoSyncEnabled(enabled)
+    if (!sessionId) {
+      console.warn("No session ID available")
+      return
+    }
+
+    // Update chrome storage with session ID
+    await setAutoSyncEnabled(sessionId, enabled)
 
     // Update local state
     setIsAutoSyncEnabled(enabled)
@@ -117,6 +143,7 @@ const GeminiContent = () => {
 
       // Start interval to run sync every 5 seconds
       syncIntervalRef.current = setInterval(() => {
+        console.log("sync called")
         geminiUtils.syncFunction()
       }, 5000)
 
@@ -136,10 +163,16 @@ const GeminiContent = () => {
     geminiUtils.addToInput(improvedText)
   }
 
+  // Don't render if no session ID
+  if (!sessionId) {
+    return null
+  }
+
   return (
     <div className={cn("ce-main-container")}>
       <PlatformDot
         platform={Platform.GEMINI}
+        sessionId={sessionId}
         onImprovePrompt={handleImprovePrompt}
         getCurrentInput={geminiUtils.getInputValue}
         onAutoSyncChange={handleAutoSyncChange}

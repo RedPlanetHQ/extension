@@ -5,14 +5,20 @@ import { getPlatformStorageKey, STORAGE_KEYS } from "../types"
 
 const storage = new Storage()
 
-// Auto-sync state management
-export async function getAutoSyncEnabled(): Promise<boolean> {
-  const enabled = await storage.get(STORAGE_KEYS.AUTO_SYNC_ENABLED)
+// Auto-sync state management (per session/conversation)
+export async function getAutoSyncEnabled(sessionId: string): Promise<boolean> {
+  const key = `auto_sync_${sessionId}`
+  const enabled = await storage.get(key)
+  // Default to false (off) for new sessions
   return enabled === "true"
 }
 
-export async function setAutoSyncEnabled(enabled: boolean): Promise<void> {
-  await storage.set(STORAGE_KEYS.AUTO_SYNC_ENABLED, enabled.toString())
+export async function setAutoSyncEnabled(
+  sessionId: string,
+  enabled: boolean
+): Promise<void> {
+  const key = `auto_sync_${sessionId}`
+  await storage.set(key, enabled.toString())
 }
 
 // Syncing status management
@@ -49,12 +55,11 @@ export async function clearPlatformSyncData(platform: Platform): Promise<void> {
 
 // Get full extension state
 export async function getExtensionState(): Promise<ExtensionState> {
-  const autoSyncEnabled = await getAutoSyncEnabled()
   const syncIntervalMs = await getSyncInterval()
   const lastSyncTimestamp = await storage.get(STORAGE_KEYS.LAST_SYNC_TIMESTAMP)
 
   return {
-    autoSyncEnabled,
+    autoSyncEnabled: false, // Now session-specific, not global
     syncIntervalMs,
     lastSyncTimestamp: lastSyncTimestamp
       ? parseInt(lastSyncTimestamp, 10)

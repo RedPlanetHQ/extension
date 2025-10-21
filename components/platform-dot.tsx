@@ -16,6 +16,7 @@ import { StreamingSearch } from "./streaming-search"
 
 interface PlatformDotProps {
   platform: Platform
+  sessionId: string
   onImprovePrompt: (improvedText: string) => void
   getCurrentInput: () => string
   onAutoSyncChange?: (enabled: boolean) => void
@@ -25,6 +26,7 @@ interface PlatformDotProps {
 
 export default function PlatformDot({
   platform,
+  sessionId,
   onImprovePrompt,
   getCurrentInput,
   onAutoSyncChange,
@@ -196,7 +198,7 @@ export default function PlatformDot({
                 minWidth: "180px"
               }}>
               {/* Auto Sync Toggle */}
-              <AutoSyncToggle onToggle={onAutoSyncChange} />
+              <AutoSyncToggle sessionId={sessionId} onToggle={onAutoSyncChange} />
 
               {/* Space Selector */}
               <Button

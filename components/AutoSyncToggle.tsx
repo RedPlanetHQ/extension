@@ -5,26 +5,36 @@ import { getAutoSyncEnabled, setAutoSyncEnabled } from "~utils/storage"
 import { Switch } from "./switch"
 
 interface AutoSyncToggleProps {
+  sessionId: string
   onToggle?: (enabled: boolean) => void
 }
 
-export default function AutoSyncToggle({ onToggle }: AutoSyncToggleProps) {
+export default function AutoSyncToggle({
+  sessionId,
+  onToggle
+}: AutoSyncToggleProps) {
   const [isEnabled, setIsEnabled] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Load initial state from chrome.storage
+  // Load initial state from chrome.storage (session-specific)
   useEffect(() => {
     const loadState = async () => {
-      const enabled = await getAutoSyncEnabled()
+      if (!sessionId) {
+        setIsLoading(false)
+        return
+      }
+      const enabled = await getAutoSyncEnabled(sessionId)
       setIsEnabled(enabled)
       setIsLoading(false)
     }
     loadState()
-  }, [])
+  }, [sessionId])
 
   const handleToggle = async (checked: boolean) => {
+    if (!sessionId) return
+
     setIsEnabled(checked)
-    await setAutoSyncEnabled(checked)
+    await setAutoSyncEnabled(sessionId, checked)
 
     // Bubble event to parent
     onToggle?.(checked)
