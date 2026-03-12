@@ -3,29 +3,30 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { LoaderCircle } from "lucide-react"
 import React from "react"
 
-import { cn } from "./utils"
+import { cn } from "~components/utils"
 
 const buttonVariants = cva(
-  "ce-inline-flex ce-items-center ce-justify-start ce-whitespace-nowrap ce-rounded ce-transition-colors ce-focus-visible:outline-none ce-focus-visible:shadow-none ce-disabled:pointer-events-none ce-disabled:opacity-50 dark:ce-focus-visible:ring-slate-300",
+  "ce-inline-flex ce-items-center ce-justify-center ce-whitespace-nowrap ce-rounded ce-transition-colors focus-visible:ce-outline-none focus-visible:ce-shadow-none disabled:ce-pointer-events-none disabled:ce-opacity-50 dark:focus-visible:ce-ring-slate-300",
   {
     variants: {
       variant: {
         default:
-          "!ce-text-base ce-bg-primary ce-text-white ce-shadow ce-hover:bg-primary/90 dark:ce-hover:bg-primary/90",
-        destructive: "ce-text-red-500 ce-bg-grayAlpha-100 ce-border-none",
+          "ce-bg-primary ce-text-white hover:ce-bg-primary/90 dark:hover:ce-bg-primary/90",
+        destructive: "ce-text-red-500 ce-bg-red-100 ce-border-none",
         outline:
-          "ce-border ce-border-border ce-shadow-sm ce-hover:bg-gray-100 ce-shadow-none",
-        secondary: "ce-bg-grayAlpha-100 ce-border-none",
-        ghost: "dark:ce-focus-visible:ring-0 hover:ce-bg-grayAlpha-100",
-        link: "dark:ce-focus-visible:ring-0"
+          "ce-border ce-border-border ce-shadow-sm hover:ce-bg-gray-100 ce-shadow-none",
+        secondary:
+          "ce-bg-grayAlpha-100 hover:ce-bg-grayAlpha-200 ce-border-none",
+        ghost: "dark:focus-visible:ce-ring-0 hover:ce-bg-grayAlpha-100",
+        link: "dark:focus-visible:ce-ring-0"
       },
       size: {
-        default: "ce-h-8 ce-rounded ce-px-2 ce-py-1",
-        sm: "ce-h-6 ce-rounded-sm ce-px-2 ce-py-2",
-        xs: "ce-h-5 ce-rounded-sm ce-px-1 ce-py-1",
+        default: "ce-h-7 ce-rounded ce-px-2 ce-py-1",
+        sm: "ce-h-6 ce-rounded ce-px-2 ce-py-2",
+        xs: "ce-h-5 ce-rounded ce-px-1 ce-py-1",
         lg: "ce-h-8 ce-px-4 ce-py-2",
-        xl: "ce-h-9 ce-rounded ce-px-8",
-        "2xl": "ce-h-11 ce-rounded ce-px-8",
+        xl: "ce-h-9 ce-rounded ce-px-8 ce-text-base",
+        "2xl": "ce-h-12 ce-rounded ce-px-8",
         icon: "ce-h-9 ce-w-9"
       },
       full: {
@@ -71,14 +72,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           buttonVariants({ variant, size, full, className }),
-          isActive && "ce-bg-accent ce-text-accent-foreground"
+          isActive && "!ce-bg-accent !ce-text-accent-foreground"
         )}
         ref={ref}
         type="button"
         {...props}
         disabled={isLoading ?? disabled}>
         {isLoading ? (
-          <LoaderCircle className="ce-animate-spin ce-mr-2" size={14} />
+          <LoaderCircle className="ce-mr-2 ce-animate-spin" />
         ) : (
           <></>
         )}

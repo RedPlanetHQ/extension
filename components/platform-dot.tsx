@@ -6,12 +6,7 @@ import { createDeepSearch, fetchSpaces } from "~utils/api"
 import AutoSyncToggle from "./AutoSyncToggle"
 import { Button } from "./button"
 import StaticLogo from "./logo"
-import {
-  Popover,
-  PopoverContent,
-  PopoverPortal,
-  PopoverTrigger
-} from "./popover"
+import { Popover, PopoverContent, PopoverTrigger } from "./popover"
 import { StreamingSearch } from "./streaming-search"
 
 interface PlatformDotProps {
@@ -39,10 +34,8 @@ export default function PlatformDot({
   const [isLoadingSpaces, setIsLoadingSpaces] = useState(false)
   const [isImproving, setIsImproving] = useState(false)
   const [showStreamingSearch, setShowStreamingSearch] = useState(false)
-  const [deepSearchData, setDeepSearchData] = useState<{
-    runId: string
-    token: string
-  } | null>(null)
+  const [deepSearchStream, setDeepSearchStream] =
+    useState<ReadableStream<Uint8Array> | null>(null)
 
   // Fetch spaces when space selector is opened
   useEffect(() => {
@@ -67,7 +60,8 @@ export default function PlatformDot({
 
   const handleSpaceClick = (space: Space) => {
     // Add space summary to input
-    const spaceSummary = space.summary || ""
+
+    const spaceSummary = space.ingestText || ""
     const currentInput = getCurrentInput()
 
     // Combine current input with space summary
@@ -95,15 +89,12 @@ export default function PlatformDot({
       const url = window.location.href
       const title = document.title
 
-      // Call createDeepSearch API
-      const result = await createDeepSearch(currentPrompt, url, title)
+      // Call createDeepSearch API which returns a stream directly
+      const stream = await createDeepSearch(currentPrompt, url, title)
 
-      if (result && result.id && result.token) {
-        // Store the run ID and token
-        setDeepSearchData({
-          runId: result.id,
-          token: result.token
-        })
+      if (stream) {
+        // Store the stream
+        setDeepSearchStream(stream)
 
         // Show streaming search view
         setShowStreamingSearch(true)
@@ -121,7 +112,7 @@ export default function PlatformDot({
 
     // Close popover and reset state
     setShowStreamingSearch(false)
-    setDeepSearchData(null)
+    setDeepSearchStream(null)
     setIsOpen(false)
   }
 
@@ -161,7 +152,7 @@ export default function PlatformDot({
         <PopoverContent
           className="ce-p-2 ce-shadow-1 !ce-bg-background-3 ce-w-full ce-items-start"
           align="end">
-          {showStreamingSearch && deepSearchData ? (
+          {showStreamingSearch && deepSearchStream ? (
             <div
               style={{
                 display: "flex",
@@ -174,7 +165,7 @@ export default function PlatformDot({
               <Button
                 onClick={() => {
                   setShowStreamingSearch(false)
-                  setDeepSearchData(null)
+                  setDeepSearchStream(null)
                 }}
                 variant="ghost"
                 className="ce-justify-start">
@@ -183,8 +174,7 @@ export default function PlatformDot({
 
               {/* Streaming Search Component */}
               <StreamingSearch
-                runId={deepSearchData.runId}
-                token={deepSearchData.token}
+                stream={deepSearchStream}
                 afterStreaming={handleAfterStreaming}
                 onInsert={handleInsertImprovedPrompt}
               />
@@ -198,14 +188,19 @@ export default function PlatformDot({
                 minWidth: "180px"
               }}>
               {/* Auto Sync Toggle */}
-              <AutoSyncToggle sessionId={sessionId} onToggle={onAutoSyncChange} />
+              {sessionId && (
+                <AutoSyncToggle
+                  sessionId={sessionId}
+                  onToggle={onAutoSyncChange}
+                />
+              )}
 
               {/* Space Selector */}
               <Button
                 onClick={() => setShowSpaces(true)}
                 variant="ghost"
                 className="ce-justify-start ce-items-center">
-                Add space context
+                Add document context
               </Button>
 
               {/* Improve Prompt */}
@@ -244,11 +239,11 @@ export default function PlatformDot({
                 }}>
                 {isLoadingSpaces ? (
                   <div style={{ padding: "8px", fontSize: "13px" }}>
-                    Loading spaces...
+                    Loading documents...
                   </div>
                 ) : spaces.length === 0 ? (
                   <div style={{ padding: "8px", fontSize: "13px" }}>
-                    No spaces found
+                    No documents found
                   </div>
                 ) : (
                   spaces.map((space) => (
@@ -257,7 +252,7 @@ export default function PlatformDot({
                       onClick={() => handleSpaceClick(space)}
                       variant="ghost"
                       className="ce-justify-start">
-                      {space.name}
+                      {space.title}
                     </Button>
                   ))
                 )}

@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
-  content: ["./{components,contents,popup}/**/*.{ts,tsx}", "./popup.tsx"],
+  content: ["./{components,contents,popup,sidepanel}/**/*.{ts,tsx}", "./popup.tsx", "./sidepanel.tsx"],
   plugins: [],
   // Remove prefix for simplicity
   prefix: "ce-",

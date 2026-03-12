@@ -135,7 +135,6 @@ function getConversationId(): string | null {
   }
 }
 
-
 /**
  * Sync function called by auto-sync interval
  * Syncs new conversation pairs to the API
@@ -175,8 +174,10 @@ export async function syncFunction(): Promise<void> {
       return
     }
 
-    const totalCount = logsResponse.totalCount || 0
-    console.log(`TotalCount: ${totalCount}, Conversation length: ${conversation.length}`)
+    const totalCount = logsResponse.episodes?.length || 0
+    console.log(
+      `TotalCount: ${totalCount}, Conversation length: ${conversation.length}`
+    )
 
     // Create pairs of user-assistant messages
     const conversationPairs: Array<{ user: string; assistant: string }> = []
@@ -208,7 +209,7 @@ export async function syncFunction(): Promise<void> {
       console.log(`Syncing ${newPairs.length} new pairs`)
 
       for (const pair of newPairs) {
-        const episodeBody = `User: ${pair.user}\n\nAssistant: ${pair.assistant}`
+        const episodeBody = `<user>${pair.user}</user>\n\n<assistant>${pair.assistant}</assistant>`
         await addEpisode(episodeBody, conversationId)
         console.log("Episode added successfully")
       }

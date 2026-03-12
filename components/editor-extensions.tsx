@@ -8,6 +8,7 @@ import { mergeAttributes, type Extension } from "@tiptap/react"
 import { cx } from "class-variance-authority"
 import { all, createLowlight } from "lowlight"
 import { HorizontalRule, Placeholder, StarterKit, TiptapLink } from "novel"
+import { Markdown } from "tiptap-markdown"
 
 // create a lowlight instance with all languages loaded
 export const lowlight = createLowlight(all)
@@ -103,7 +104,7 @@ export const starterKit = StarterKit.configure({
   },
   paragraph: {
     HTMLAttributes: {
-      class: cx("ce-leading-[24px] ce-mt-[1rem] paragraph-node")
+      class: cx("ce-leading-[24px] ce-mt-[0.5rem] paragraph-node")
     }
   },
   codeBlock: false,
@@ -131,6 +132,7 @@ export const extensionsForConversation = [
   Table.configure({
     resizable: true
   }),
+  Markdown,
   TableRow,
   TableHeader,
   TableCell,

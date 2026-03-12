@@ -1,8 +1,8 @@
 {
   "name": "core-extension",
-  "displayName": "Core memory",
-  "version": "0.0.7",
-  "description": "Core memory extension",
+  "displayName": "Corebrain",
+  "version": "0.1.0",
+  "description": "Corebrain extension",
   "author": "Redplanethq (harshith@tegon.ai)",
   "scripts": {
     "dev": "plasmo dev",
@@ -10,8 +10,10 @@
     "package": "plasmo package"
   },
   "dependencies": {
+    "@ai-sdk/react": "^3.0.118",
     "@plasmohq/messaging": "^0.7.2",
     "@plasmohq/storage": "1.15.0",
+    "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.0.3",
@@ -33,6 +35,7 @@
     "@tiptap/react": "^2.11.9",
     "@tiptap/starter-kit": "2.11.9",
     "@trigger.dev/react-hooks": "4.0.0-v4-beta.22",
+    "ai": "^6.0.116",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "eventsource": "^4.0.0",
@@ -45,6 +48,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-merge": "^2.3.0",
+    "tiptap-markdown": "^0.9.0",
     "turndown": "^7.2.1"
   },
   "devDependencies": {
@@ -64,8 +68,18 @@
       "https://*/*"
     ],
     "permissions": [
-      "storage"
-    ]
+      "storage",
+      "sidePanel"
+    ],
+    "commands": {
+      "_execute_side_panel": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+M",
+          "mac": "Command+Shift+M"
+        },
+        "description": "Open Core Memory sidepanel"
+      }
+    }
   },
   "pnpm": {
     "onlyBuiltDependencies": [

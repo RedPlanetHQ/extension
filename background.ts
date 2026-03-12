@@ -1,12 +1,8 @@
-const handleClick = (tab) => {
-  if (!tab.id) throw new Error("tab id not found")
-  chrome.tabs.sendMessage(tab.id, {
-    name: "show-dialog"
-  })
+if (chrome.sidePanel) {
+  // Chrome 114+ — disable popup and open sidepanel on icon click
+  chrome.action.setPopup({ popup: "" })
+  chrome.sidePanel
+    .setPanelBehavior({ openPanelOnActionClick: true })
+    .catch(console.error)
 }
-
-if (chrome.action != undefined) {
-  chrome.action.onClicked.addListener(handleClick)
-} else {
-  chrome.browserAction.onClicked.addListener(handleClick)
-}
+// No sidePanel (Arc, Firefox, older Chrome) — popup.tsx opens as default

@@ -17,12 +17,12 @@ export const config: PlasmoCSConfig = {
   matches: ["https://gemini.google.com/*"]
 }
 
-// Mount the dot inside .leading-actions-wrapper as the last child
+// Mount the dot inside .trailing-actions-wrapper as the last child
 export const getInlineAnchor: PlasmoGetInlineAnchor = async () => {
   const waitForContainer = () => {
     return new Promise<Element>((resolve) => {
       const checkContainer = () => {
-        const container = document.querySelector(".leading-actions-wrapper")
+        const container = document.querySelector(".trailing-actions-wrapper")
 
         if (container) {
           resolve(container)
@@ -38,7 +38,7 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () => {
 
   return {
     element: container,
-    insertPosition: "beforeend" // Insert as last child
+    insertPosition: "afterbegin" // Insert as last child
   }
 }
 
@@ -161,11 +161,6 @@ const GeminiContent = () => {
 
   const handleImprovePrompt = (improvedText: string) => {
     geminiUtils.addToInput(improvedText)
-  }
-
-  // Don't render if no session ID
-  if (!sessionId) {
-    return null
   }
 
   return (

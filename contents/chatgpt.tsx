@@ -36,6 +36,29 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () => {
           )
         }
 
+
+        if (!buttonContainer) {
+          buttonContainer = document.querySelector(
+            '[aria-label="Dictate button"]'
+          )
+          if (buttonContainer) {
+            resolve(
+              buttonContainer.parentElement.parentElement
+            )
+          }
+        }
+
+        if (!buttonContainer) {
+          buttonContainer = document.querySelector(
+            '[aria-label="Start Voice"]'
+          )
+          if (buttonContainer) {
+            resolve(
+              buttonContainer.parentElement.parentElement
+            )
+          }
+        }
+
         if (buttonContainer && buttonContainer.parentElement) {
           // Return the parent element
           resolve(buttonContainer.parentElement)
@@ -170,11 +193,6 @@ const ChatGPTContent = () => {
 
   const handleImprovePrompt = (improvedText: string) => {
     chatgptUtils.addToInput(improvedText)
-  }
-
-  // Don't render if no session ID
-  if (!sessionId) {
-    return null
   }
 
   return (

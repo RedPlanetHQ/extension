@@ -183,7 +183,7 @@ export async function syncFunction(): Promise<void> {
       return
     }
 
-    const totalCount = logsResponse.totalCount || 0
+    const totalCount = logsResponse.episodes?.length || 0
     console.log(
       `TotalCount: ${totalCount}, Conversation length: ${conversation.length}`
     )
@@ -218,7 +218,7 @@ export async function syncFunction(): Promise<void> {
       console.log(`Syncing ${newPairs.length} new pairs`)
 
       for (const pair of newPairs) {
-        const episodeBody = `User: ${pair.user}\n\nAssistant: ${pair.assistant}`
+        const episodeBody = `<user>${pair.user}</user>\n\n<assistant>${pair.assistant}</assistant>`
         await addEpisode(episodeBody, conversationId)
         console.log("Episode added successfully")
       }

@@ -4,22 +4,20 @@ import React from "react"
 
 import { Button } from "./button"
 import { extensionsForConversation } from "./editor-extensions"
-import { useTriggerStream } from "./use-trigger-stream"
+import { useStreamReader } from "./use-stream-reader"
 
 interface StreamingSearchProps {
-  runId: string
-  token: string
+  stream: ReadableStream<Uint8Array>
   afterStreaming: () => void
   onInsert?: (content: string) => void
 }
 
 export const StreamingSearch = ({
-  runId,
-  token,
+  stream,
   afterStreaming,
   onInsert
 }: StreamingSearchProps) => {
-  const { message } = useTriggerStream(runId, token, afterStreaming)
+  const { message } = useStreamReader(stream, afterStreaming)
   const [loadingText, setLoadingText] = React.useState("Searching...")
   const [copySuccess, setCopySuccess] = React.useState(false)
 

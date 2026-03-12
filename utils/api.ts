@@ -92,7 +92,7 @@ export async function fetchSpaces() {
   const apiBaseUrl = await getApiBaseUrl()
 
   try {
-    const response = await fetch(`${apiBaseUrl}/spaces`, {
+    const response = await fetch(`${apiBaseUrl}/documents`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +105,8 @@ export async function fetchSpaces() {
     }
 
     const result = await response.json()
-    return result.spaces || []
+
+    return result.documents || []
   } catch (error) {
     console.error("Failed to fetch spaces:", error)
     return null
@@ -124,7 +125,7 @@ export async function fetchLogs(sessionId: string, limit: number = 1) {
 
   try {
     const response = await fetch(
-      `${apiBaseUrl}/logs?sessionId=${sessionId}&limit=${limit}`,
+      `${apiBaseUrl}/episodes/session/${sessionId}`,
       {
         method: "GET",
         headers: {
@@ -146,13 +147,112 @@ export async function fetchLogs(sessionId: string, limit: number = 1) {
   }
 }
 
+// Conversations API
+export interface Conversation {
+  id: string
+  title: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ConversationHistory {
+  id: string
+  userType: string
+  message: string
+  parts?: any[]
+}
+
+export interface ConversationWithHistory extends Conversation {
+  title: string
+  ConversationHistory: ConversationHistory[]
+}
+
+export async function getConversationHistory(
+  conversationId: string
+): Promise<ConversationWithHistory | null> {
+  const apiKey = await getApiKey()
+  if (!apiKey) return null
+
+  const apiBaseUrl = await getApiBaseUrl()
+
+  try {
+    const response = await fetch(
+      `${apiBaseUrl}/conversation/${conversationId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`
+        }
+      }
+    )
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    return await response.json()
+  } catch (error) {
+    console.error("Failed to fetch conversation history:", error)
+    return null
+  }
+}
+
+export async function fetchConversations(
+  search = "",
+  limit = 5
+): Promise<Conversation[]> {
+  const apiKey = await getApiKey()
+  if (!apiKey) return []
+
+  const apiBaseUrl = await getApiBaseUrl()
+  const params = new URLSearchParams({ limit: String(limit) })
+  if (search) params.set("search", search)
+
+  try {
+    const response = await fetch(`${apiBaseUrl}/conversations?${params}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`
+      }
+    })
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    const result = await response.json()
+    return result.conversations || []
+  } catch (error) {
+    console.error("Failed to fetch conversations:", error)
+    return []
+  }
+}
+
+export async function createConversation(
+  message: string,
+  title?: string
+): Promise<{ conversationId: string } | null> {
+  const apiKey = await getApiKey()
+  if (!apiKey) return null
+
+  const apiBaseUrl = await getApiBaseUrl()
+
+  try {
+    const response = await fetch(`${apiBaseUrl}/conversation/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({ message, title, source: "core-extension" })
+    })
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    return await response.json()
+  } catch (error) {
+    console.error("Failed to create conversation:", error)
+    return null
+  }
+}
+
 // Deep search API (for improve prompt feature)
-// Uses trigger run pattern similar to extension-search
+// Returns a streaming response directly
 export async function createDeepSearch(
   query: string,
   url: string,
   title?: string
-) {
+): Promise<ReadableStream<Uint8Array> | null> {
   const apiKey = await getApiKey()
   if (!apiKey) {
     console.error("No API key found")
@@ -170,7 +270,7 @@ export async function createDeepSearch(
       },
       body: JSON.stringify({
         content: JSON.stringify({ query, url, title }),
-        stream: false
+        stream: true
       })
     })
 
@@ -178,12 +278,8 @@ export async function createDeepSearch(
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    const result = await response.json()
-
-    return {
-      id: result.id,
-      token: result.publicAccessToken
-    }
+    // Return the stream directly
+    return response.body
   } catch (error) {
     console.error("Failed to create deep search:", error)
     return null

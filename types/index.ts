@@ -7,9 +7,10 @@ export enum Platform {
 // Space interface (from API)
 export interface Space {
   id: string
-  name: string
+  title: string
   description?: string
   summary?: string
+  ingestText?: string
 }
 
 // Extension state stored in chrome.storage.local
